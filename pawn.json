@@ -7,7 +7,9 @@
 		"sampctl/samp-stdlib",
 		"Southclaws/zcmd",
 		"pawn-lang/YSI-Includes@5.x",
-		"pBlueG/SA-MP-MySQL:R41-4"
+		"pBlueG/SA-MP-MySQL:R41-4",
+		"Awsomedude/easyDialog",
+		"Sreyas-Sreelal/samp-bcrypt:0.3.3"
 	],
 	"local": true,
 	"runtime": {
