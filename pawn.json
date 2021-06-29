@@ -1,0 +1,13 @@
+{
+	"user": "Abielfrl",
+	"repo": "SCNR",
+	"entry": "gamemodes/scnr.pwn",
+	"output": "gamemodes/scnr.amx",
+	"dependencies": [
+		"sampctl/samp-stdlib"
+	],
+	"local": true,
+	"runtime": {
+		"mode": "y_testing"
+	}
+}
