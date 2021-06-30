@@ -15,7 +15,7 @@
 	],
 	"local": true,
 	"runtime": {
-		"version": "0.3.7",
+		"version": "0.3.DL",
 		"mode": "y_testing",
 		"rcon_password": "password",
 		"port": 7777,
@@ -50,6 +50,9 @@
 		"db_log_queries": false,
 		"conncookies": true,
 		"cookielogging": false,
-		"output": true
+		"output": true,
+		"extra": {
+			"useartwork": "1"
+		}
 	}
 }
