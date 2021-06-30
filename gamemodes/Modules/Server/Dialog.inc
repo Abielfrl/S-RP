@@ -9,8 +9,7 @@ Dialog:Register(playerid, response, listitem, inputtext[])
     if(strlen(inputtext) > 32)
 	    return  Dialog_Show(playerid, Register, DIALOG_STYLE_PASSWORD, "Account Register", "ERROR: You Can't specify more than 32 Character for password.", "Register", "Quit");
 
-    bcrypt_hash(playerid, "OnPlayerPasswordHashed", inputtext, BCRYPT_COST);
-    Dialog_Show(playerid, Welcome, DIALOG_STYLE_MSGBOX, "Selamat datang kembali", "Alhamdulilah Jalan", "Oke", "");
+    bcrypt_hash(playerid, #OnPlayerPasswordHashed, inputtext, BCRYPT_COST, "i", playerid);
     SetSpawnInfo(playerid, 0, 172, 1769.6141,-1862.0129,13.5768, 0.0, 0, 0, 0, 0, 0, 0);
     SavePlayerData(playerid);
     SpawnPlayer(playerid);
@@ -29,9 +28,16 @@ Dialog:Login(playerid, response, listitem, inputtext[])
 	mysql_query(g_sql, queryCheck);
 	new
 		hash[BCRYPT_HASH_LENGTH];
-	cache_get_value_name(0, "Password", hash, sizeof(hash));
-	printf("%s", hash);
-	bcrypt_verify(playerid, "OnPlayerPasswordChecked", inputtext, hash);
+	if (cache_num_rows() > 0)
+	{
+		new 
+			hash[BCRYPT_HASH_LENGTH];
+
+		cache_get_value_name(0, "Password", hash, sizeof(hash));
+		bcrypt_verify(playerid, #OnPlayerPasswordChecked, inputtext, hash);
+	}
 	SetSpawnInfo(playerid, 0, PlayerData[playerid][pSkin], PlayerData[playerid][pPos][0], PlayerData[playerid][pPos][1], PlayerData[playerid][pPos][2], 0.0, 0, 0, 0, 0, 0, 0);
-	SpawnPlayer(playerid);    
+	SetPlayerPos(playerid, PlayerData[playerid][pPos][0], PlayerData[playerid][pPos][1], PlayerData[playerid][pPos][2]);
+	SpawnPlayer(playerid);
+	cache_unset_active();    
 }

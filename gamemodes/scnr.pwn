@@ -13,6 +13,8 @@
 
 #include <foreach>
 
+#include <sscanf2>
+
 main()
 {
     return 1;
@@ -57,6 +59,7 @@ public OnGameModeInit()
 
 public OnGamemodeExit()
 {
+    mysql_close(g_sql);
     foreach(new i : Player)
     {
         SavePlayerData(i);

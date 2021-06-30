@@ -57,6 +57,7 @@ public OnPlayerPasswordHashed(playerid, hashid)
 {
     new 
         query[512],
+        string[128],
         hash[BCRYPT_HASH_LENGTH];
 	bcrypt_get_hash(hash, sizeof(hash));
 	mysql_format(g_sql,query,sizeof(query),"INSERT INTO `characters` (`Username`,`Password`) VALUES('%e','%e')",GetName(playerid),hash);
@@ -73,6 +74,7 @@ public OnPlayerPasswordChecked(playerid, bool:success)
     if(!success)
         return Dialog_Show(playerid, Login, DIALOG_STYLE_PASSWORD, "Login to Server", string, "Select", "Cancel");
     OnPlayerLogin(playerid);
+    SendClientMessageEx(playerid, X11_LIGHTBLUE, "SERVER"WHITE" Sukses masuk ke dalam server");
     return 1;
 }
 
@@ -124,7 +126,7 @@ ReturnName(playerid)
 
 stock SaveFirstPlayer(playerid)
 {
-	PlayerData[playerid][pLevel] = 0;
+	PlayerData[playerid][pLevel] = 1;
 	PlayerData[playerid][pPos][0] = 1769.6141;
 	PlayerData[playerid][pPos][1] = 1862.0129;
 	PlayerData[playerid][pPos][2] = 13.5768;
