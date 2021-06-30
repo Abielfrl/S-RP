@@ -9,14 +9,16 @@
 		"pawn-lang/YSI-Includes@5.x",
 		"pBlueG/SA-MP-MySQL:R41-4",
 		"Awsomedude/easyDialog",
-		"Sreyas-Sreelal/samp-bcrypt:0.3.3"
+		"Sreyas-Sreelal/samp-bcrypt:0.3.3",
+		"karimcambridge/SAMP-foreach",
+		"maddinat0r/sscanf:v2.8.3"
 	],
 	"local": true,
 	"runtime": {
 		"version": "0.3.7",
 		"mode": "y_testing",
 		"rcon_password": "password",
-		"port": 8192,
+		"port": 7777,
 		"hostname": "SA-MP Server",
 		"maxplayers": 50,
 		"language": "",

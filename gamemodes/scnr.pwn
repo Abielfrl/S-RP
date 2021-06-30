@@ -9,10 +9,9 @@
 
 #include <YSI_Server/y_colors>
 
-#define     MYSQL_HOST      "127.0.0.1"
-#define     MYSQL_USERNAME  "root"
-#define     MYSQL_PASSWORD  ""
-#define     MYSQL_DATABASE  "scnr"
+#include <samp_bcrypt>
+
+#include <foreach>
 
 main()
 {
@@ -20,7 +19,38 @@ main()
 }
 
 new MySQL:g_sql;
+static g_MysqlRaceCheck[MAX_PLAYERS];
 
 #include "Modules\Server\Define"
 #include "Modules\Server\Enum"
 #include "Modules\Server\Function"
+#include "Modules\Server\Dialog"
+
+#include "Modules\Player\CommandPlayer"
+
+public OnPlayerConnect(playerid)
+{
+    SendClientMessageEx(playerid, X11_LIGHTBLUE, "SERVER:"WHITE"Welcome %s to this server!", ReturnName(playerid));
+    CheckPlayerAccount(playerid);
+    return 1;
+}
+
+public OnPlayerDisconnect(playerid, reason)
+{
+    SavePlayerData(playerid);
+    return 1;
+}
+
+public OnGameModeInit()
+{
+    LoadMYSQL();
+    DisableInteriorEnterExits();
+    EnableStuntBonusForAll(0);
+    SetNameTagDrawDistance(10.0);
+    ShowPlayerMarkers(0);
+    foreach(new i : Player)
+    {
+        OnPlayerLogin(i);
+    }
+    return 1;
+}

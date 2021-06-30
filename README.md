@@ -33,15 +33,6 @@ Simply install to your project:
 ```bash
 sampctl package install Abielfrl/SCNR
 ```
-
-Include in your code and begin using the library:
-
-```pawn
-#include <SCNR>
-```
-
-## Usage
-
 <!--
 Write your code documentation or examples here. If your library is documented in
 the source code, direct users there. If not, list your API and describe it well
@@ -60,4 +51,12 @@ To test, simply run the package:
 
 ```bash
 sampctl package run
+```
+
+
+## Changelog
+
+```bash
+[ADD] Include include
+[ADD] Login and Register System
 ```
