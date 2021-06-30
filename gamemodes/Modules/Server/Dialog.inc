@@ -10,11 +10,10 @@ Dialog:Register(playerid, response, listitem, inputtext[])
 	    return  Dialog_Show(playerid, Register, DIALOG_STYLE_PASSWORD, "Account Register", "ERROR: You Can't specify more than 32 Character for password.", "Register", "Quit");
 
     bcrypt_hash(playerid, "OnPlayerPasswordHashed", inputtext, BCRYPT_COST);
-    SaveFirstPlayer(playerid);
     Dialog_Show(playerid, Welcome, DIALOG_STYLE_MSGBOX, "Selamat datang kembali", "Alhamdulilah Jalan", "Oke", "");
     SetSpawnInfo(playerid, 0, 172, 1769.6141,-1862.0129,13.5768, 0.0, 0, 0, 0, 0, 0, 0);
-    SpawnPlayer(playerid);
     SavePlayerData(playerid);
+    SpawnPlayer(playerid);
 }
 
 Dialog:Login(playerid, response, listitem, inputtext[])
@@ -26,7 +25,7 @@ Dialog:Login(playerid, response, listitem, inputtext[])
 	if(strlen(inputtext) < 1)
 	    return Dialog_Show(playerid, Login, DIALOG_STYLE_PASSWORD, "Account Login", string, "Login", "Cancel");
 	new queryCheck[256];
-	mysql_format(g_sql, queryCheck, sizeof(queryCheck), "SELECT PlayerPassword FROM characters WHERE Username = '%e' LIMIT 1", GetName(playerid));
+	mysql_format(g_sql, queryCheck, sizeof(queryCheck), "SELECT Password FROM characters WHERE Username = '%e' LIMIT 1", GetName(playerid));
 	mysql_query(g_sql, queryCheck);
 	new
 		hash[BCRYPT_HASH_LENGTH];

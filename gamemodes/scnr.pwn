@@ -30,7 +30,7 @@ static g_MysqlRaceCheck[MAX_PLAYERS];
 
 public OnPlayerConnect(playerid)
 {
-    SendClientMessageEx(playerid, X11_LIGHTBLUE, "SERVER:"WHITE"Welcome %s to this server!", ReturnName(playerid));
+    SendClientMessageEx(playerid, X11_LIGHTBLUE, "SERVER:"WHITE" Welcome %s to this server!", ReturnName(playerid));
     CheckPlayerAccount(playerid);
     return 1;
 }
@@ -51,6 +51,15 @@ public OnGameModeInit()
     foreach(new i : Player)
     {
         OnPlayerLogin(i);
+    }
+    return 1;
+}
+
+public OnGamemodeExit()
+{
+    foreach(new i : Player)
+    {
+        SavePlayerData(i);
     }
     return 1;
 }
