@@ -50,6 +50,8 @@ y_testing unit-tests, you should indicate to readers what to expect below here.
 To test, simply run the package:
 
 ```bash
+sampctl package ensure
+sampctl package build
 sampctl package run
 ```
 
