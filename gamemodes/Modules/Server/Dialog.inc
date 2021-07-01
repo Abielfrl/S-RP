@@ -9,10 +9,40 @@ Dialog:Register(playerid, response, listitem, inputtext[])
     if(strlen(inputtext) > 32)
 	    return  Dialog_Show(playerid, Register, DIALOG_STYLE_PASSWORD, "Account Register", "ERROR: You Can't specify more than 32 Character for password.", "Register", "Quit");
 
-    bcrypt_hash(playerid, #OnPlayerPasswordHashed, inputtext, BCRYPT_COST, "i", playerid);
-    SetSpawnInfo(playerid, 0, 172, 1769.6141,-1862.0129,13.5768, 0.0, 0, 0, 0, 0, 0, 0);
-    SavePlayerData(playerid);
-    SpawnPlayer(playerid);
+	bcrypt_hash(playerid, "OnPlayerPasswordHashed", inputtext, BCRYPT_COST);
+	return 1;
+}
+
+Dialog:Gender(playerid, response, listitem, inputtext[])
+{
+	if(!response)
+	{
+		switch(listitem)
+		{
+			case 0:
+			{
+				PlayerData[playerid][pGender] = 1;
+				PlayerData[playerid][pSkin] = 1;
+				SetSpawnInfo(playerid, 0, 240, 1769.6141, -1862.0129, 13.5768, 0.0, 0, 0, 0, 0, 0, 0);
+            	SpawnPlayer(playerid);
+				PlayerData[playerid][pPos][0] = 1769.6141;
+				PlayerData[playerid][pPos][1] = 1862.0129;
+				PlayerData[playerid][pPos][2] = 13.5768;
+				SavePlayerData(playerid);
+			}
+			case 1:
+			{
+				PlayerData[playerid][pGender] = 2;
+				PlayerData[playerid][pSkin] = 85;
+				SetSpawnInfo(playerid, 0, 240, 1769.6141, -1862.0129, 13.5768, 0.0, 0, 0, 0, 0, 0, 0);
+            	SpawnPlayer(playerid);
+				PlayerData[playerid][pPos][0] = 1769.6141;
+				PlayerData[playerid][pPos][1] = 1862.0129;
+				PlayerData[playerid][pPos][2] = 13.5768;
+				SavePlayerData(playerid);
+			}
+		}
+	}
 }
 
 Dialog:Login(playerid, response, listitem, inputtext[])
@@ -26,18 +56,15 @@ Dialog:Login(playerid, response, listitem, inputtext[])
 	new queryCheck[256];
 	mysql_format(g_sql, queryCheck, sizeof(queryCheck), "SELECT Password FROM characters WHERE Username = '%e' LIMIT 1", GetName(playerid));
 	mysql_query(g_sql, queryCheck);
+
 	new
 		hash[BCRYPT_HASH_LENGTH];
+	
 	if (cache_num_rows() > 0)
 	{
-		new 
-			hash[BCRYPT_HASH_LENGTH];
-
 		cache_get_value_name(0, "Password", hash, sizeof(hash));
 		bcrypt_verify(playerid, #OnPlayerPasswordChecked, inputtext, hash);
 	}
-	SetSpawnInfo(playerid, 0, PlayerData[playerid][pSkin], PlayerData[playerid][pPos][0], PlayerData[playerid][pPos][1], PlayerData[playerid][pPos][2], 0.0, 0, 0, 0, 0, 0, 0);
-	SetPlayerPos(playerid, PlayerData[playerid][pPos][0], PlayerData[playerid][pPos][1], PlayerData[playerid][pPos][2]);
-	SpawnPlayer(playerid);
-	cache_unset_active();    
+	cache_unset_active();
+	return 0;    
 }

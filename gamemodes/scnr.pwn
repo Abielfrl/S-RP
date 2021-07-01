@@ -21,7 +21,6 @@ main()
 }
 
 new MySQL:g_sql;
-static g_MysqlRaceCheck[MAX_PLAYERS];
 
 #include "Modules\Server\Define"
 #include "Modules\Server\Enum"
@@ -57,7 +56,7 @@ public OnGameModeInit()
     return 1;
 }
 
-public OnGamemodeExit()
+public OnGameModeExit()
 {
     mysql_close(g_sql);
     foreach(new i : Player)

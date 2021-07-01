@@ -30,6 +30,7 @@ public OnPlayerLogin(playerid)
     cache_get_value_name_float(0, "PlayerPosY", PlayerData[playerid][pPos][1]);
     cache_get_value_name_float(0, "PlayerPosZ", PlayerData[playerid][pPos][2]);
     cache_get_value_name_int(0, "Skin", PlayerData[playerid][pSkin]);
+    cache_get_value_name_int(0, "Gender", PlayerData[playerid][pGender]);
     print("OnPlayerLogin Jalan");
     return 1;
 }
@@ -38,31 +39,32 @@ stock SavePlayerData(playerid)
 {
     GetPlayerPos(playerid, PlayerData[playerid][pPos][0], PlayerData[playerid][pPos][1], PlayerData[playerid][pPos][2]);  
     new query[1012];
-    mysql_format(g_sql, query, sizeof(query), "UPDATE `characters` SET `Level` = '%d', `PlayerPosX`='%.4f', `PlayerPosY`='%.4f', `PlayerPosZ`='%.4f', `Skin` = '%d', `Password` = '%s' WHERE `Username` = '%s'",
+    mysql_format(g_sql, query, sizeof(query), "UPDATE `characters` SET `Level` = '%d', `PlayerPosX`='%.4f', `PlayerPosY`='%.4f', `PlayerPosZ`='%.4f', `Skin` = '%d', `Password` = '%s', `Gender` = '%d' WHERE `Username` = '%s'",
     PlayerData[playerid][pLevel],
     PlayerData[playerid][pPos][0],
     PlayerData[playerid][pPos][1],
     PlayerData[playerid][pPos][2],
     PlayerData[playerid][pSkin],
     PlayerData[playerid][pPassword],
+    PlayerData[playerid][pGender],
     GetName(playerid)
     );
     mysql_tquery(g_sql, query);
-    print("[DATA] Save data for %s", GetName(playerid));
+    print("[DATA] Save data for");
     return 1;
 }
 
-forward OnPlayerPasswordHashed(playerid, hashid);
-public OnPlayerPasswordHashed(playerid, hashid)
+forward OnPlayerPasswordHashed(playerid);
+public OnPlayerPasswordHashed(playerid)
 {
     new 
         query[512],
-        string[128],
         hash[BCRYPT_HASH_LENGTH];
-	bcrypt_get_hash(hash, sizeof(hash));
-	mysql_format(g_sql,query,sizeof(query),"INSERT INTO `characters` (`Username`,`Password`) VALUES('%e','%e')",GetName(playerid),hash);
+    bcrypt_get_hash(hash, sizeof(hash));
+	mysql_format(g_sql,query,sizeof(query),"INSERT INTO `characters` (`Username`,`Password`) VALUES('%s','%s')", GetName(playerid), hash);
     mysql_query(g_sql, query, false);
-	printf("Password hashed for player %d: %s", playerid, hash);
+    SaveFirstPlayer(playerid);
+    Dialog_Show(playerid, Gender, DIALOG_STYLE_LIST, "Which Gender", "Male\nFemale", "Select", "Cancel");
     return 1;
 }
 
@@ -74,6 +76,8 @@ public OnPlayerPasswordChecked(playerid, bool:success)
     if(!success)
         return Dialog_Show(playerid, Login, DIALOG_STYLE_PASSWORD, "Login to Server", string, "Select", "Cancel");
     OnPlayerLogin(playerid);
+    SetSpawnInfo(playerid, 0, PlayerData[playerid][pSkin], PlayerData[playerid][pPos][0], PlayerData[playerid][pPos][1], PlayerData[playerid][pPos][2], 0.0, 0, 0, 0, 0, 0, 0);
+	SpawnPlayer(playerid);
     SendClientMessageEx(playerid, X11_LIGHTBLUE, "SERVER"WHITE" Sukses masuk ke dalam server");
     return 1;
 }
@@ -127,6 +131,7 @@ ReturnName(playerid)
 stock SaveFirstPlayer(playerid)
 {
 	PlayerData[playerid][pLevel] = 1;
+    PlayerData[playerid][pSkin] = 0;
 	PlayerData[playerid][pPos][0] = 1769.6141;
 	PlayerData[playerid][pPos][1] = 1862.0129;
 	PlayerData[playerid][pPos][2] = 13.5768;
