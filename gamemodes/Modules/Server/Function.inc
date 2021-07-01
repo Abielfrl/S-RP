@@ -30,7 +30,6 @@ public OnPlayerLogin(playerid)
     cache_get_value_name_float(0, "PlayerPosY", PlayerData[playerid][pPos][1]);
     cache_get_value_name_float(0, "PlayerPosZ", PlayerData[playerid][pPos][2]);
     cache_get_value_name_int(0, "Skin", PlayerData[playerid][pSkin]);
-    cache_get_value_name_int(0, "Gender", PlayerData[playerid][pGender]);
     print("OnPlayerLogin Jalan");
     return 1;
 }
@@ -39,14 +38,13 @@ stock SavePlayerData(playerid)
 {
     GetPlayerPos(playerid, PlayerData[playerid][pPos][0], PlayerData[playerid][pPos][1], PlayerData[playerid][pPos][2]);  
     new query[1012];
-    mysql_format(g_sql, query, sizeof(query), "UPDATE `characters` SET `Level` = '%d', `PlayerPosX`='%.4f', `PlayerPosY`='%.4f', `PlayerPosZ`='%.4f', `Skin` = '%d', `Password` = '%s', `Gender` = '%d' WHERE `Username` = '%s'",
+    mysql_format(g_sql, query, sizeof(query), "UPDATE `characters` SET `Level` = '%d', `PlayerPosX`='%.4f', `PlayerPosY`='%.4f', `PlayerPosZ`='%.4f', `Skin` = '%d', `Password` = '%s', WHERE `Username` = '%s'",
     PlayerData[playerid][pLevel],
     PlayerData[playerid][pPos][0],
     PlayerData[playerid][pPos][1],
     PlayerData[playerid][pPos][2],
     PlayerData[playerid][pSkin],
     PlayerData[playerid][pPassword],
-    PlayerData[playerid][pGender],
     GetName(playerid)
     );
     mysql_tquery(g_sql, query);
@@ -59,12 +57,13 @@ public OnPlayerPasswordHashed(playerid)
 {
     new 
         query[512],
-        hash[BCRYPT_HASH_LENGTH];
+        hash[BCRYPT_HASH_LENGTH + 1];
     bcrypt_get_hash(hash, sizeof(hash));
-	mysql_format(g_sql,query,sizeof(query),"INSERT INTO `characters` (`Username`,`Password`) VALUES('%s','%s')", GetName(playerid), hash);
+	mysql_format(g_sql,query,sizeof(query),"INSERT INTO `characters` (`Username`,`Password`) VALUES('%e','%e')", GetName(playerid), hash);
     mysql_query(g_sql, query, false);
-    SaveFirstPlayer(playerid);
-    Dialog_Show(playerid, Gender, DIALOG_STYLE_LIST, "Which Gender", "Male\nFemale", "Select", "Cancel");
+    SetSpawnInfo(playerid, 0, 172, 1769.6141,-1862.0129,13.5768, 0.0, 0, 0, 0, 0, 0, 0);
+    SavePlayerData(playerid);
+    SpawnPlayer(playerid);
     return 1;
 }
 
