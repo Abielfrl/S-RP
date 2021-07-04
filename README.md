@@ -55,6 +55,12 @@ sampctl package build
 sampctl package run
 ```
 
+##include
+https://github.com/Southclaws/zcmd
+https://github.com/pawn-lang/YSI-Includes
+https://github.com/pBlueG/SA-MP-MySQL/ V41
+https://github.com/Awsomedude/easyDialog
+https://github.com/Sreyas-Sreelal/samp-bcrypt
 
 ## Changelog
 
