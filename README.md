@@ -1,6 +1,6 @@
-# SCNR
+# S-RP
 
-[![sampctl](https://img.shields.io/badge/sampctl-SCNR-2f2f2f.svg?style=for-the-badge)](https://github.com/Abielfrl/SCNR)
+[![sampctl](https://img.shields.io/badge/sampctl-S-RP-2f2f2f.svg?style=for-the-badge)](https://github.com/Abielfrl/SCNR)
 
 <!--
 Short description of your library, why it's useful, some examples, pictures or
@@ -31,7 +31,7 @@ Happy Pawning!
 Simply install to your project:
 
 ```bash
-sampctl package install Abielfrl/SCNR
+sampctl package install Abielfrl/S-RP
 ```
 <!--
 Write your code documentation or examples here. If your library is documented in
