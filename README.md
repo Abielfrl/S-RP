@@ -55,13 +55,15 @@ sampctl package build
 sampctl package run
 ```
 
-## include
+### Dependencies
 
-- https://github.com/Southclaws/zcmd
-- https://github.com/pawn-lang/YSI-Includes
-- https://github.com/pBlueG/SA-MP-MySQL/ V41
-- https://github.com/Awsomedude/easyDialog
-- https://github.com/Sreyas-Sreelal/samp-bcrypt
+| Name | Version | URL |
+| ------ | ------ | ------ |
+| SA:MP MySQL Plugin | R41+ | https://github.com/pBlueG/SA-MP-MySQL/releases |
+| ZCMD | - | https://github.com/Southclaws/zcmd |
+| YSI Includes | 5x | https://github.com/pawn-lang/YSI-Includes |
+| EasyDialog | 2.0 | https://github.com/Awsomedude/easyDialog |
+| Samp Bcrypt | 0.3.4 | https://github.com/Sreyas-Sreelal/samp-bcrypt |
 
 ## Changelog
 
