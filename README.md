@@ -1,6 +1,6 @@
 # S-RP
 
-[![sampctl](https://img.shields.io/badge/sampctl-SRP-2f2f2f.svg?style=for-the-badge)](https://github.com/Abielfrl/SCNR)
+[![sampctl](https://img.shields.io/badge/sampctl-S RP-2f2f2f.svg?style=for-the-badge)](https://github.com/Abielfrl/SCNR)
 
 <!--
 Short description of your library, why it's useful, some examples, pictures or
