@@ -1,6 +1,6 @@
-# SCNR
+# S-RP
 
-[![sampctl](https://img.shields.io/badge/sampctl-SCNR-2f2f2f.svg?style=for-the-badge)](https://github.com/Abielfrl/SCNR)
+[![sampctl](https://img.shields.io/badge/sampctl-SRP-2f2f2f.svg?style=for-the-badge)](https://github.com/Abielfrl/SCNR)
 
 <!--
 Short description of your library, why it's useful, some examples, pictures or
@@ -31,7 +31,7 @@ Happy Pawning!
 Simply install to your project:
 
 ```bash
-sampctl package install Abielfrl/SCNR
+sampctl package install Abielfrl/S-RP
 ```
 <!--
 Write your code documentation or examples here. If your library is documented in
@@ -55,6 +55,15 @@ sampctl package build
 sampctl package run
 ```
 
+### Dependencies
+
+| Name | Version | URL |
+| ------ | ------ | ------ |
+| SA:MP MySQL Plugin | R41+ | https://github.com/pBlueG/SA-MP-MySQL/releases |
+| ZCMD | - | https://github.com/Southclaws/zcmd |
+| YSI Includes | 5x | https://github.com/pawn-lang/YSI-Includes |
+| EasyDialog | 2.0 | https://github.com/Awsomedude/easyDialog |
+| Samp Bcrypt | 0.3.4 | https://github.com/Sreyas-Sreelal/samp-bcrypt |
 
 ## Changelog
 
