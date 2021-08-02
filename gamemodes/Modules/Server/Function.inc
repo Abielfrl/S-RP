@@ -30,6 +30,8 @@ public OnPlayerLogin(playerid)
     cache_get_value_name_float(0, "PlayerPosY", PlayerData[playerid][pPos][1]);
     cache_get_value_name_float(0, "PlayerPosZ", PlayerData[playerid][pPos][2]);
     cache_get_value_name_int(0, "Skin", PlayerData[playerid][pSkin]);
+
+    Load_Vehicle(playerid);
     print("OnPlayerLogin Jalan");
     return 1;
 }
@@ -38,7 +40,7 @@ stock SavePlayerData(playerid)
 {
     GetPlayerPos(playerid, PlayerData[playerid][pPos][0], PlayerData[playerid][pPos][1], PlayerData[playerid][pPos][2]);  
     new query[1012];
-    mysql_format(g_sql, query, sizeof(query), "UPDATE `characters` SET `Level` = '%d', `PlayerPosX`='%.4f', `PlayerPosY`='%.4f', `PlayerPosZ`='%.4f', `Skin` = '%d', `Password` = '%s', WHERE `Username` = '%s'",
+    mysql_format(g_sql, query, sizeof(query), "UPDATE `characters` SET `Level` = '%d', `PlayerPosX`='%.4f', `PlayerPosY`='%.4f', `PlayerPosZ`='%.4f', `Skin` = '%d', `Password` = '%s' WHERE `Username` = '%s'",
     PlayerData[playerid][pLevel],
     PlayerData[playerid][pPos][0],
     PlayerData[playerid][pPos][1],
@@ -61,6 +63,7 @@ public OnPlayerPasswordHashed(playerid)
     bcrypt_get_hash(hash, sizeof(hash));
 	mysql_format(g_sql,query,sizeof(query),"INSERT INTO `characters` (`Username`,`Password`) VALUES('%e','%e')", GetName(playerid), hash);
     mysql_query(g_sql, query, false);
+    // Dialog_Show(playerid, Gender, DIALOG_STYLE_LIST, "Gender", "Male\nFemale", "Select", "Cancel");
     SetSpawnInfo(playerid, 0, 172, 1769.6141,-1862.0129,13.5768, 0.0, 0, 0, 0, 0, 0, 0);
     SavePlayerData(playerid);
     SpawnPlayer(playerid);
@@ -92,6 +95,7 @@ forward OnQueryFinished(playerid);
 public OnQueryFinished(playerid)
 {
     new string[512];
+    SavePlayerData(playerid);
     if(cache_num_rows() > 0)
     {
         cache_get_value_name_int(0, "ID", PlayerData[playerid][pID]);
@@ -144,4 +148,73 @@ stock SetPlayerValidScore(playerid, amount)
 	PlayerData[playerid][pLevel] += amount;
 	SetPlayerScore(playerid, PlayerData[playerid][pLevel]);
 	return 1;
+}
+
+stock TerminateConnection(playerid)
+{
+    SavePlayerData(playerid);
+    return 1;
+}
+
+stock IsRoleplayName(player[])
+{
+    for(new i = 0; i < strlen(player); i++)
+    {
+        if (player[n] == '_' && player[n+1] >= 'A' && player[n+1] <= 'Z') return 1;
+        if (player[n] == ']' || player[n] == '[') return 0;
+    }
+    return 0;
+}
+
+new const g_arrVehicleNames[][] = {
+	"Landstalker", "Bravura", "Buffalo", "Linerunner", "Perrenial", "Sentinel", "Dumper", "Firetruck", "Trashmaster",
+	"Stretch", "Manana", "Infernus", "Voodoo", "Pony", "Mule", "Cheetah", "Ambulance", "Leviathan", "Moonbeam",
+	"Esperanto", "Taxi", "Washington", "Bobcat", "Whoopee", "BF Injection", "Hunter", "Premier", "Enforcer",
+	"Securicar", "Banshee", "Predator", "Bus", "Rhino", "Barracks", "Hotknife", "Trailer", "Previon", "Coach",
+	"Cabbie", "Stallion", "Rumpo", "RC Bandit", "Romero", "Packer", "Monster", "Admiral", "Squalo", "Seasparrow",
+	"Pizzaboy", "Tram", "Trailer", "Turismo", "Speeder", "Reefer", "Tropic", "Flatbed", "Yankee", "Caddy", "Solair",
+	"Berkley's RC Van", "Skimmer", "PCJ-600", "Faggio", "Freeway", "RC Baron", "RC Raider", "Glendale", "Oceanic",
+	"Sanchez", "Sparrow", "Patriot", "Quad", "Coastguard", "Dinghy", "Hermes", "Sabre", "Rustler", "ZR-350", "Walton",
+	"Regina", "Comet", "BMX", "Burrito", "Camper", "Marquis", "Baggage", "Dozer", "Maverick", "News Chopper", "Rancher",
+	"FBI Rancher", "Virgo", "Greenwood", "Jetmax", "Hotring", "Sandking", "Blista Compact", "Police Maverick",
+	"Boxville", "Benson", "Mesa", "RC Goblin", "Hotring Racer A", "Hotring Racer B", "Bloodring Banger", "Rancher",
+	"Super GT", "Elegant", "Journey", "Bike", "Mountain Bike", "Beagle", "Cropduster", "Stunt", "Tanker", "Roadtrain",
+	"Nebula", "Majestic", "Buccaneer", "Shamal", "Hydra", "FCR-900", "NRG-500", "HPV1000", "Cement Truck", "Tow Truck",
+	"Fortune", "Cadrona", "SWAT Truck", "Willard", "Forklift", "Tractor", "Combine", "Feltzer", "Remington", "Slamvan",
+	"Blade", "Streak", "Freight", "Vortex", "Vincent", "Bullet", "Clover", "Sadler", "Firetruck", "Hustler", "Intruder",
+	"Primo", "Cargobob", "Tampa", "Sunrise", "Merit", "Utility", "Nevada", "Yosemite", "Windsor", "Monster", "Monster",
+	"Uranus", "Jester", "Sultan", "Stratum", "Elegy", "Raindance", "RC Tiger", "Flash", "Tahoma", "Savanna", "Bandito",
+	"Freight Flat", "Streak Carriage", "Kart", "Mower", "Dune", "Sweeper", "Broadway", "Tornado", "AT-400", "DFT-30",
+	"Huntley", "Stafford", "BF-400", "News Van", "Tug", "Trailer", "Emperor", "Wayfarer", "Euros", "Hotdog", "Club",
+	"Freight Box", "Trailer", "Andromada", "Dodo", "RC Cam", "Launch", "LSPD Car", "SFPD Car", "LVPD Car",
+	"Police Rancher", "Picador", "S.W.A.T", "Alpha", "Phoenix", "Glendale", "Sadler", "Luggage", "Luggage", "Stairs",
+	"Boxville", "Tiller", "Utility Trailer"
+};
+
+IsNumeric(const str[])
+{
+	for (new i = 0, l = strlen(str); i != l; i ++)
+	{
+	    if (i == 0 && str[0] == '-')
+			continue;
+
+	    else if (str[i] < '0' || str[i] > '9')
+			return 0;
+	}
+	return 1;
+}
+
+GetVehicleModelByName(const name[])
+{
+	if (IsNumeric(name) && (strval(name) >= 400 && strval(name) <= 611))
+	    return strval(name);
+
+	for (new i = 0; i < sizeof(g_arrVehicleNames); i ++)
+	{
+	    if (strfind(g_arrVehicleNames[i], name, true) != -1)
+	    {
+	        return i + 400;
+		}
+	}
+	return 0;
 }

@@ -17,7 +17,7 @@
 
 main()
 {
-    return 1;
+    printf("Starting server...");
 }
 
 new MySQL:g_sql;
@@ -27,7 +27,10 @@ new MySQL:g_sql;
 #include "Modules\Server\Function"
 #include "Modules\Server\Dialog"
 
-#include "Modules\Player\CommandPlayer"
+#include "Modules\Server\Vehicle\Funcs"
+
+#include "Modules\Server\CMD"
+#include "Modules\Player\PlayerCMD"
 
 public OnPlayerConnect(playerid)
 {
@@ -38,7 +41,7 @@ public OnPlayerConnect(playerid)
 
 public OnPlayerDisconnect(playerid, reason)
 {
-    SavePlayerData(playerid);
+    TerminateConnection(playerid);
     return 1;
 }
 
@@ -58,10 +61,16 @@ public OnGameModeInit()
 
 public OnGameModeExit()
 {
-    mysql_close(g_sql);
     foreach(new i : Player)
     {
         SavePlayerData(i);
+        Save_Vehicle(i);
     }
+    mysql_close(g_sql);
+    return 1;
+}
+
+public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
+{
     return 1;
 }

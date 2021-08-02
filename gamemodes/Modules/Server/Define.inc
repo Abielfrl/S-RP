@@ -11,3 +11,9 @@
 #if !defined BCRYPT_COST
 	#define BCRYPT_COST 12
 #endif
+
+#define SendErrorMessage(%0,%1) \
+	SendClientMessageEx(%0, X11_GREY, "[ERROR]:"WHITE" "%1)
+
+#define function%0(%1) \
+	forward %0(%1); public %0(%1)
