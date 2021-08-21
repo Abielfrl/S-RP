@@ -86,6 +86,6 @@ function Vehicle_Create(playerid, ownerid, modelid, Float:x, Float:y, Float:z, F
 	VehicleData[i][vHood] = 0;
 	VehicleData[i][vVehicle] = CreateVehicle(modelid, x, y, z, a, color1, color2, -1);
 	// Save_Vehicle(playerid);
-    mysql_tquery(g_sql, "INSERT INTO `cars` (`carModel`) VALUES(0)", "OnCarCreated", "d", i);
+    mysql_tquery(g_sql, "INSERT INTO `vehicle` (`Model`) VALUES(0)", "OnCarCreated", "dd", i, playerid);
 	return -1;
 }

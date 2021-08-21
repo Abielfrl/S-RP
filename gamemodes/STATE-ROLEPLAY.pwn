@@ -34,7 +34,7 @@ new MySQL:g_sql;
 
 public OnPlayerConnect(playerid)
 {
-    SendClientMessageEx(playerid, X11_LIGHTBLUE, "SERVER:"WHITE" Welcome %s to this server!", ReturnName(playerid));
+    SendClientMessageEx(playerid, X11_LIGHTBLUE, "SERVER:"WHITE" Welcome %s to State Roleplay server!", ReturnName(playerid));
     CheckPlayerAccount(playerid);
     return 1;
 }

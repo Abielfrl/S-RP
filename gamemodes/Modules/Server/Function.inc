@@ -50,7 +50,7 @@ stock SavePlayerData(playerid)
     GetName(playerid)
     );
     mysql_tquery(g_sql, query);
-    print("[DATA] Save data for");
+    printf("%s Has been saved to database", PlayerData[playerid][pUsername]);
     return 1;
 }
 
